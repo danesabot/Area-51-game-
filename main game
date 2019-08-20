@@ -1,0 +1,180 @@
+int cellsize;
+int x3;
+int x, y;
+int  y1;
+int  y2;
+PImage background1;
+PImage lanes;
+PImage player;
+PImage Alien;
+PImage background2;
+aliens[] alien;
+int amount;
+PImage agent;
+agent[] agents;
+
+void setup() {
+  size(1000, 1000);
+  x = 520;
+  y = 500;
+  y1 = 0;
+  y2 = -1000;
+  background1 = loadImage("images/safeZone.png");
+  background1.resize(1000, 1000);
+  background2 = loadImage("images/desert.png");
+  background2.resize(1000, 1000);
+  lanes = loadImage("images/lanes.png");
+  lanes.resize(1000, 1000);
+  player = loadImage("images/PeopleImage.png");
+  Alien = loadImage("images/Alien.png");
+  Alien.resize(100, 100);
+  agent = loadImage("images/agent.png");
+  agent.resize(200, 200);
+  amount = 0;
+  textSize(30);
+  loadAliens();
+  loadAgents();
+}
+
+void draw() {
+  drawArea51();
+  drawLanes();
+  drawAliens();
+  drawPlayer();
+  moveBackground();
+  alienChecker();
+  alienHit();
+  text("Score: "+amount, width-textWidth("Score: "+amount), 30);
+  agentChecker();
+  drawAgents();
+  agentHit();
+} 
+void reset() {
+  cellsize = 420;
+}
+
+void drawPlayer() {
+  image(player, x, y);
+}
+void drawArea51() {
+  image(background1, 0, y1);
+  image(background2, 0, y2);
+}
+void keyPressed() {
+
+
+  if (key=='a' || key=='A') {
+    x = 420;
+  }
+
+  if (key == 'S' || key == 's') {
+    x = 520;
+  }
+
+  if (key=='d' || key=='D') {
+    x = 620;
+  }
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      x = 420;
+    }
+    if (keyCode == DOWN) {
+      x = 520;
+    }
+    if (keyCode == RIGHT) {
+      x= 620;
+    }
+  }
+}
+
+void drawLanes() {
+  image(lanes, 0, 0);
+}
+void alienChecker() {
+  if (y2 >= 1000) {
+    loadAliens();
+  }
+}
+ void loadAliens() {
+  alien = new aliens[1];
+  alien[0] = new aliens();
+  giveAlienX();
+ }
+
+void giveAlienX() {
+  int random = (int) random(3);
+
+  if (random == 0) {
+    x3 = 420;
+  }
+
+  if (random == 1) {
+    x3 = 520;
+  }
+
+  if (random == 2) {
+    x3 = 620;
+  }
+}
+
+void drawAliens() {
+  image(Alien, x3, y2);
+}
+
+void moveBackground() {
+
+  y1= y1 + 10;
+  y2= y2 + 10;
+  if (y1 >= 1001) {
+    y1 = -1000; 
+    background1 = background2;
+  }
+
+  if (y2 >= 1001) {
+    y2 = -1000;
+  }
+}
+void alienHit() {
+  if (x == x3 && y == y2) {
+    x3 = 10000000;
+    amount++;
+  }
+}
+void chooseLane() {
+}
+void agentHit() {
+  if (x == x3 && y == y2) {
+    x3 = 10000000;
+    amount++;
+  }
+}
+void agentChecker() {
+  if (y2 >= 1000) {
+    loadAgents();
+  }
+}
+void loadAgents() {
+  agents = new agent[1];
+  agents[0] = new agent();
+  giveAgentX();
+}
+
+void giveAgentX() {
+  int random = (int) random(3);
+
+  if (random == 0) {
+    x3 = 420;
+  }
+
+  if (random == 1) {
+    x3 = 520;
+  }
+
+  if (random == 2) {
+    x3 = 620;
+  }
+}
+
+void drawAgents() {
+  image(agent, x3, y2);
+}
